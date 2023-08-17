@@ -3,6 +3,7 @@
 
 import nmap
 import xml.etree.ElementTree
+import time
 
 
 class Colors:
@@ -21,53 +22,64 @@ def line():
 
 def syn_scan():
 	try:
-		host_address = input(Colors.BLUE + "Provide a valid Host/Hostname address\n" + Colors.ENDC + ': ')
+		host_address = input(Colors.BLUE + "Provide a valid Host address\n" + Colors.ENDC + ': ')
 		print(Colors.WARNING + f"Host: {host_address}" + Colors.ENDC)
 		line()
-		print(Colors.WARNING + 'Starting Scan...' + Colors.ENDC)
+		print(Colors.GREEN + 'Starting Scan' + Colors.ENDC)
 		line()
 		nm.scan(host_address, '1-1024', arguments='-v -sS')
+		time.sleep(3)
 		for host in nm.all_hosts():
-			print(Colors.HEADER + "Nmap version: " + Colors.ENDC + f"{nm.nmap_version()}")
-			print(Colors.HEADER + "Scan Information: " + Colors.ENDC + f"{nm.scaninfo()}")
-			print(Colors.HEADER + 'Host: ' + Colors.ENDC + f'{host} | {nm[host].hostname()}')
-			print(Colors.HEADER + 'State: ' + Colors.ENDC + f'{nm[host].state()}')
-			for proto in nm[host].all_protocols():
+			if nm[host].state() == "down":
+				print(Colors.FAIL + "Non-existent or inactive host" + Colors.ENDC)
 				line()
-				print(f'Protocol : {proto}')	
-				lport = nm[host][proto].keys()
-				for port in lport:
-					state = nm[host][proto][port]['state']
-					service_name = nm[host][proto][port]['name']
-					print(Colors.WARNING + f'Port : {port}\t' + 
-						Colors.GREEN + f'State : {state}\t' + 
-						Colors.BLUE + f'Service : {service_name}' + Colors.ENDC)
+			else:
+				print(Colors.HEADER + "Nmap version: " + Colors.ENDC + f"{nm.nmap_version()}")
+				print(Colors.HEADER + "Scan type: " + Colors.ENDC + "SYN Scan")
+				print(Colors.HEADER + 'Host: ' + Colors.ENDC + f'{host} | {nm[host].hostname()}')
+				print(Colors.HEADER + 'State: ' + Colors.ENDC + f'{nm[host].state()}')
+				for proto in nm[host].all_protocols():
+					line()
+					print(f'Protocol : {proto}')	
+					lport = nm[host][proto].keys()
+					for port in lport:
+						state = nm[host][proto][port]['state']
+						service_name = nm[host][proto][port]['name']
+						print("[+] " + Colors.WARNING + f'Port : {port}\t' + 
+							  	    Colors.GREEN + f'State : {state}\t' + 
+							  		Colors.BLUE + f'Service : {service_name}' + Colors.ENDC)
 		line()
 	except xml.etree.ElementTree.ParseError:
 			print(Colors.FAIL + "Permission error | Try running with: sudo ./scanmatrixpro.py" + Colors.ENDC)
 			line()
-			exit()
 	except nmap.PortScannerError:
 			print(Colors.FAIL + "Permission error | Try running with: sudo ./scanmatrixpro.py" + Colors.ENDC)
 			line()
-			exit()
 
 
 nm = nmap.PortScanner()
 
-print(Colors.HEADER + "============================" + Colors.ENDC)
-print(Colors.HEADER + "  Welcome to SCANMATRIXPRO  " + Colors.ENDC)
-print(Colors.HEADER + "============================" + Colors.ENDC)
+print(Colors.HEADER + "  ____                      __  __         _          _              ____               " + Colors.ENDC)
+print(Colors.HEADER + " / ___|   ___  __ _  _ __  |  \/  |  __ _ | |_  _ __ (_)__  __      |  _ \  _ __  ___   " + Colors.ENDC)
+print(Colors.HEADER + " \___ \  / __|/ _` || '_ \ | |\/| | / _` || __|| '__|| |\ \/ /_____ | |_) || '__|/ _ \  " + Colors.ENDC)
+print(Colors.HEADER + "  ___) || (__| (_| || | | || |  | || (_| || |_ | |   | | >  <|_____||  __/ | |  | (_) | " + Colors.ENDC)
+print(Colors.HEADER + " |____/  \___|\__,_||_| |_||_|  |_| \__,_| \__||_|   |_|/_/\_\      |_|    |_|   \___/  " + Colors.ENDC)
+print("")
+print(Colors.FAIL + "                                                      ScanMatrix-Pro v1.1 - by Renan D. " + Colors.ENDC)
+                                                                                       
 
 while True:
-	type_scan = input(Colors.BLUE + "Select a Scan type:" + Colors.ENDC + "\n[1] SYN Scan\n[2] UDP Scan\n[3] Silence Scan\n[4] Network Status\n[*] Any other for exit\n: ")
-	# print(Colors.WARNING + f"Scan type selected: [{type_scan}]" + Colors.ENDC)
-	line()
-	if type_scan == '1':
-		try:
-			syn_scan()
-		except:
-			print(Colors.FAIL + "Unexpected error" + Colors.ENDC)
-			print()
-	else:
-		exit()
+	try:
+		type_scan = int(input(Colors.BLUE + "Select a Scan type:" + Colors.ENDC + "\n[1] SYN Scan\n[2] UDP Scan\n[3] Silence Scan\n[4] Network Status\n[5] Exit\n: "))
+		line()
+		if type_scan == 1:
+			try:
+				syn_scan()
+			except:
+				print(Colors.FAIL + "Unexpected error" + Colors.ENDC)
+		elif type_scan == 5:
+			exit()
+	except ValueError:
+		line()
+		print(Colors.FAIL + "Value error | Try running with: 1, 2, 3, 4 or 5" + Colors.ENDC)
+		line()
