@@ -20,14 +20,17 @@ def line():
 	print("========================================================================")
 
 
-def syn_scan():
+def scan(argument, scan_type_name):
 	try:
 		host_address = input(Colors.BLUE + "Provide a valid Host address\n" + Colors.ENDC + ': ')
 		print(Colors.WARNING + f"Host: {host_address}" + Colors.ENDC)
 		line()
+		range = input(Colors.BLUE + "Provide a valid Range or Port/Ports | Example: 1-1024 \n" + Colors.ENDC + ': ')
+		print(Colors.WARNING + f"Range: {range}" + Colors.ENDC)
+		line()
 		print(Colors.GREEN + 'Starting Scan' + Colors.ENDC)
 		line()
-		nm.scan(host_address, '1-1024', arguments='-v -sS')
+		nm.scan(host_address, range, arguments=argument)
 		time.sleep(3)
 		for host in nm.all_hosts():
 			if nm[host].state() == "down":
@@ -35,7 +38,7 @@ def syn_scan():
 				line()
 			else:
 				print(Colors.HEADER + "Nmap version: " + Colors.ENDC + f"{nm.nmap_version()}")
-				print(Colors.HEADER + "Scan type: " + Colors.ENDC + "SYN Scan")
+				print(Colors.HEADER + "Scan type: " + Colors.ENDC + scan_type_name)
 				print(Colors.HEADER + 'Host: ' + Colors.ENDC + f'{host} | {nm[host].hostname()}')
 				print(Colors.HEADER + 'State: ' + Colors.ENDC + f'{nm[host].state()}')
 				for proto in nm[host].all_protocols():
@@ -65,21 +68,52 @@ print(Colors.HEADER + " \___ \  / __|/ _` || '_ \ | |\/| | / _` || __|| '__|| |\
 print(Colors.HEADER + "  ___) || (__| (_| || | | || |  | || (_| || |_ | |   | | >  <|_____||  __/ | |  | (_) | " + Colors.ENDC)
 print(Colors.HEADER + " |____/  \___|\__,_||_| |_||_|  |_| \__,_| \__||_|   |_|/_/\_\      |_|    |_|   \___/  " + Colors.ENDC)
 print("")
-print(Colors.FAIL + "                                                      ScanMatrix-Pro v1.1 - by Renan D. " + Colors.ENDC)
+print(Colors.FAIL + "                                                      ScanMatrix-Pro v2.0 - by Renan D. " + Colors.ENDC)
                                                                                        
 
 while True:
 	try:
-		type_scan = int(input(Colors.BLUE + "Select a Scan type:" + Colors.ENDC + "\n[1] SYN Scan\n[2] UDP Scan\n[3] Silence Scan\n[4] Network Status\n[5] Exit\n: "))
+		type_scan = int(input(Colors.BLUE + "Select a Scan type:" + Colors.ENDC + "\n[1] SYN Scan\n[2] UDP Scan\n[3] Connect Scan\n[4] Fin Scan\n[5] Xmas Scan\n[6] Custom Scan\n[7] Exit\n: "))
 		line()
+		# SYN Scan
 		if type_scan == 1:
 			try:
-				syn_scan()
+				scan('-sS', 'SYN Scan')
 			except:
 				print(Colors.FAIL + "Unexpected error" + Colors.ENDC)
+		# UDP Scan
+		elif type_scan == 2:
+			try:
+				scan('-sU', 'UDP Scan')
+			except:
+				print(Colors.FAIL + "Unexpected error" + Colors.ENDC)
+		# Connect Scan
+		elif type_scan == 3:
+			try:
+				scan('-sT', 'Connect Scan')
+			except:
+				print(Colors.FAIL + "Unexpected error" + Colors.ENDC)
+		# Fin Scan
+		elif type_scan == 4:
+			try:
+				scan('-sF', 'Fin Scan')
+			except:
+				print(Colors.FAIL + "Unexpected error" + Colors.ENDC)
+		# Xmas Scan
 		elif type_scan == 5:
+			try:
+				scan('-sX', 'Xmas Scan')
+			except:
+				print(Colors.FAIL + "Unexpected error" + Colors.ENDC)
+		# Exit
+		elif type_scan == 7:
+			print(Colors.GREEN + 'Until later' + Colors.ENDC)
 			exit()
+		# Error
+		else:
+			print(Colors.FAIL + "Non-existent option | Try running with: 1, 2, 3, 4, 5, 6 or 7" + Colors.ENDC)
+			line()
 	except ValueError:
 		line()
-		print(Colors.FAIL + "Value error | Try running with: 1, 2, 3, 4 or 5" + Colors.ENDC)
+		print(Colors.FAIL + "Value error | Try running with: 1, 2, 3, 4, 5, 6 or 7" + Colors.ENDC)
 		line()
