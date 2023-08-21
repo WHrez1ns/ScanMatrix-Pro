@@ -68,7 +68,7 @@ print(Colors.HEADER + " \___ \  / __|/ _` || '_ \ | |\/| | / _` || __|| '__|| |\
 print(Colors.HEADER + "  ___) || (__| (_| || | | || |  | || (_| || |_ | |   | | >  <|_____||  __/ | |  | (_) | " + Colors.ENDC)
 print(Colors.HEADER + " |____/  \___|\__,_||_| |_||_|  |_| \__,_| \__||_|   |_|/_/\_\      |_|    |_|   \___/  " + Colors.ENDC)
 print("")
-print(Colors.FAIL + "                                                      ScanMatrix-Pro v2.0 - by Renan D. " + Colors.ENDC)
+print(Colors.FAIL + "                                                      ScanMatrix-Pro v2.1 - by Renan D. " + Colors.ENDC)
                                                                                        
 
 while True:
@@ -103,6 +103,15 @@ while True:
 		elif type_scan == 5:
 			try:
 				scan('-sX', 'Xmas Scan')
+			except:
+				print(Colors.FAIL + "Unexpected error" + Colors.ENDC)
+		# Custom Scan
+		elif type_scan == 6:
+			try:
+				custom_arguments = input(Colors.BLUE + "Provide a valid Arguments | Example: --open -sS" + Colors.ENDC + "\n: ")
+				print(Colors.WARNING + f"Arguments: {custom_arguments}" + Colors.ENDC)
+				line()
+				scan(custom_arguments, 'Custom Scan')
 			except:
 				print(Colors.FAIL + "Unexpected error" + Colors.ENDC)
 		# Exit
