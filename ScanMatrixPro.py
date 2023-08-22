@@ -14,7 +14,7 @@ class Colors:
     FAIL = '\033[91m'
     ENDC = '\033[0m'
     BOLD = '\033[1m'
-
+    
 
 def line():
 	print("========================================================================")
@@ -48,9 +48,41 @@ def scan(argument, scan_type_name):
 					for port in lport:
 						state = nm[host][proto][port]['state']
 						service_name = nm[host][proto][port]['name']
-						print("[+] " + Colors.WARNING + f'Port : {port}\t' + 
-							  	    Colors.GREEN + f'State : {state}\t' + 
+						print("[+] " + Colors.WARNING + f'Port : {port}\t\t' + 
+							  	    Colors.GREEN + f'State : {state}\t\t' + 
 							  		Colors.BLUE + f'Service : {service_name}' + Colors.ENDC)
+		line()
+	except xml.etree.ElementTree.ParseError:
+			print(Colors.FAIL + "Permission error | Try running with: sudo ./scanmatrixpro.py" + Colors.ENDC)
+			line()
+	except nmap.PortScannerError:
+			print(Colors.FAIL + "Permission error | Try running with: sudo ./scanmatrixpro.py" + Colors.ENDC)
+			line()
+
+def fingerprint_scan(argument):
+	try:
+		host_address = "0.0.0.0"
+		range = "1026, 1883, 4041, 8666, 9001, 27017"
+		fiware_ports = ["1026", "1883", "4041", "8666", "9001", "27017"]
+		fiware_status = []
+		nm.scan(host_address, range, arguments=argument)
+		time.sleep(3)
+		for host in nm.all_hosts():
+			if nm[host].state() == "down":
+				print(Colors.FAIL + "Non-existent or inactive host" + Colors.ENDC)
+				line()
+			else:
+				for proto in nm[host].all_protocols():
+					lport = nm[host][proto].keys()
+					for port in lport:
+						state = nm[host][proto][port]['state']
+						# service_name = nm[host][proto][port]['name']
+						for fiware_port in fiware_ports:
+							if int(fiware_port) == port and state == "open":
+								fiware_status.append(1)
+				if not 0 in fiware_status:
+					print("[+] " + Colors.GREEN + '"FIWARE" Detected on server' + Colors.ENDC)
+				# print(fiware_status)				
 		line()
 	except xml.etree.ElementTree.ParseError:
 			print(Colors.FAIL + "Permission error | Try running with: sudo ./scanmatrixpro.py" + Colors.ENDC)
@@ -68,12 +100,12 @@ print(Colors.HEADER + " \___ \  / __|/ _` || '_ \ | |\/| | / _` || __|| '__|| |\
 print(Colors.HEADER + "  ___) || (__| (_| || | | || |  | || (_| || |_ | |   | | >  <|_____||  __/ | |  | (_) | " + Colors.ENDC)
 print(Colors.HEADER + " |____/  \___|\__,_||_| |_||_|  |_| \__,_| \__||_|   |_|/_/\_\      |_|    |_|   \___/  " + Colors.ENDC)
 print("")
-print(Colors.FAIL + "                                                      ScanMatrix-Pro v2.1 - by Renan D. " + Colors.ENDC)
+print(Colors.FAIL + "                                                      ScanMatrix-Pro v2.2 - by Renan D. " + Colors.ENDC)
                                                                                        
 
 while True:
 	try:
-		type_scan = int(input(Colors.BLUE + "Select a Scan type:" + Colors.ENDC + "\n[1] SYN Scan\n[2] UDP Scan\n[3] Connect Scan\n[4] Fin Scan\n[5] Xmas Scan\n[6] Custom Scan\n[7] Exit\n: "))
+		type_scan = int(input(Colors.BLUE + "Select a Scan type:" + Colors.ENDC + "\n[1] SYN Scan\n[2] UDP Scan\n[3] Connect Scan\n[4] Fin Scan\n[5] Xmas Scan\n[6] Custom Scan\n[7] Fingerprint Analysis\n[8] Exit\n: "))
 		line()
 		# SYN Scan
 		if type_scan == 1:
@@ -114,15 +146,18 @@ while True:
 				scan(custom_arguments, 'Custom Scan')
 			except:
 				print(Colors.FAIL + "Unexpected error" + Colors.ENDC)
-		# Exit
+		# Fingerprint Detect
 		elif type_scan == 7:
-			print(Colors.GREEN + 'Until later' + Colors.ENDC)
+			fingerprint_scan("")
+		# Exit
+		elif type_scan == 8:
+			print(Colors.WARNING + 'Until later :D')
 			exit()
 		# Error
 		else:
-			print(Colors.FAIL + "Non-existent option | Try running with: 1, 2, 3, 4, 5, 6 or 7" + Colors.ENDC)
+			print(Colors.FAIL + "Non-existent option | Try running with: 1, 2, 3, 4, 5, 6, 7 or 8" + Colors.ENDC)
 			line()
 	except ValueError:
 		line()
-		print(Colors.FAIL + "Value error | Try running with: 1, 2, 3, 4, 5, 6 or 7" + Colors.ENDC)
+		print(Colors.FAIL + "Value error | Try running with: 1, 2, 3, 4, 5, 6, 7 or 8" + Colors.ENDC)
 		line()
