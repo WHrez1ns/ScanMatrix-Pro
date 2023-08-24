@@ -46,8 +46,7 @@ ScanMatrix-Pro é uma ferramenta interativa de varredura de rede e análise de f
 
 ## Ambiente de testes
 
--
--<img src="img/image.png">
+<img src="img/image.png">
 
 ## Instalação
 
@@ -612,6 +611,11 @@ ScanMatrix-Pro is an interactive network scanning and fingerprint analysis tool.
 - Python 3.x
 - [Nmap](https://pypi.org/project/python-nmap/)
 - Administrator permissions for some scans
+
+
+## Test environment
+
+<img src="img/image.png">
 
 ## Installation
 
