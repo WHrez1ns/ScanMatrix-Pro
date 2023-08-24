@@ -44,6 +44,11 @@ ScanMatrix-Pro é uma ferramenta interativa de varredura de rede e análise de f
 - [Nmap](https://pypi.org/project/python-nmap/)
 - Permissões de administrador
 
+## Ambiente de testes
+
+-
+-<img src="img/image.png">
+
 ## Instalação
 
 ```bash
