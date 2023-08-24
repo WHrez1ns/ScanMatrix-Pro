@@ -147,7 +147,7 @@ def line():
 A função `line()` imprime uma linha de sinais de igual (`=`) no console. Isso pode ser usado para separar diferentes seções de saída no terminal.
 
 
-# Explicação do Código `nmap_scan()`
+## Explicação do Código `nmap_scan()`
 
 
 ```python
