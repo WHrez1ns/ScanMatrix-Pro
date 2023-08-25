@@ -591,8 +591,7 @@ ScanMatrix-Pro is an interactive network scanning and fingerprint analysis tool.
 
 - Used Editor: [Visual Studio Code](https://code.visualstudio.com/).
 
-- [Video](https://youtu.be/km3sJ0UuA_Y).
-- [Video Explanation](https://youtu.be/3hOv86YFc68).
+- [Video Practical](https://youtu.be/km3sJ0UuA_Y).
 
 - [Slides](https://www.canva.com/design/DAFsTMwdLGM/by-TbKnWTFWG01jTlOgCRA/view?utm_content=DAFsTMwdLGM&utm_campaign=designshare&utm_medium=link&utm_source=publishsharelink)<br>
 
