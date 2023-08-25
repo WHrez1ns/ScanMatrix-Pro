@@ -22,8 +22,7 @@ ScanMatrix-Pro é uma ferramenta interativa de varredura de rede e análise de f
 
 - Editor Utilizado: <a href="https://code.visualstudio.com/"> Visual Studio Code</a>.
 
-- [Video](https://youtu.be/km3sJ0UuA_Y)
- - [Video Explicativo](https://youtu.be/3hOv86YFc68)
+- [Video Prático](https://youtu.be/km3sJ0UuA_Y)
 
 
 - <a href="https://www.canva.com/design/DAFsTMwdLGM/by-TbKnWTFWG01jTlOgCRA/view?utm_content=DAFsTMwdLGM&utm_campaign=designshare&utm_medium=link&utm_source=publishsharelink"> Slides
